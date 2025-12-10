@@ -1,0 +1,17 @@
+# =============== IntelliJ / IDE 설정 파일 ===============
+.idea/             # IntelliJ IDEA의 프로젝트 설정 파일 전체
+*.iml              # 모듈 파일 (IDE 설정)
+.mvn/wrapper/maven-wrapper.jar # Maven Wrapper JAR 파일 (소스 커밋 시 제외)
+
+# =============== 빌드 결과물 ===============
+/target/           # Maven 빌드 시 생성되는 출력 디렉토리 (컴파일된 클래스, JAR 등)
+/out/              # IDE에서 빌드 시 생성되는 출력 디렉토리
+/build/            # (만약 Gradle을 함께 사용한다면 추가)
+
+# =============== 로그 및 기타 무시 파일 ===============
+*.log              # 모든 로그 파일 (*.log)
+*.bak              # 백업 파일
+
+# =============== OS 관련 파일 ===============
+.DS_Store          # macOS에서 자동으로 생성되는 파일
+Thumbs.db          # Windows에서 자동으로 생성되는 파일
