@@ -1,8 +1,8 @@
-package dev.junyeong.sikggu.presentation.auth;
+package dev.junyeong.sikggu.presentation.auth.filter;
 
-import dev.junyeong.sikggu.domain.TokenService;
-import dev.junyeong.sikggu.domain.User;
-import dev.junyeong.sikggu.domain.UserRepository;
+import dev.junyeong.sikggu.domain.auth.TokenService;
+import dev.junyeong.sikggu.domain.user.User;
+import dev.junyeong.sikggu.domain.user.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

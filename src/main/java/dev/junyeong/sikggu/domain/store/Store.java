@@ -1,5 +1,6 @@
-package dev.junyeong.sikggu.domain;
+package dev.junyeong.sikggu.domain.store;
 
+import dev.junyeong.sikggu.domain.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -31,6 +32,9 @@ public class Store {
 
   @Column(nullable = false)
   private String name;
+
+  @Column(nullable = false, unique = true)
+  private String phoneNumber;
 
   @Column(nullable = false)
   private String address;

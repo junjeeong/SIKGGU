@@ -1,5 +1,6 @@
-package dev.junyeong.sikggu.domain;
+package dev.junyeong.sikggu.domain.product;
 
+import dev.junyeong.sikggu.domain.store.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

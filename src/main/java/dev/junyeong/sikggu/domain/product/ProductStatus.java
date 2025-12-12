@@ -1,4 +1,4 @@
-package dev.junyeong.sikggu.domain;
+package dev.junyeong.sikggu.domain.product;
 
 public enum ProductStatus {
 

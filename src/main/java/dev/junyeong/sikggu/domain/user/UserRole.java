@@ -1,7 +1,6 @@
-package dev.junyeong.sikggu.domain;
+package dev.junyeong.sikggu.domain.user;
 
 public enum UserRole {
-
   USER,
   STORE;
 

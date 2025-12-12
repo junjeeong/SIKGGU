@@ -1,6 +1,6 @@
 package dev.junyeong.sikggu.global.config;
 
-import dev.junyeong.sikggu.presentation.auth.JwtAuthenticationFilter;
+import dev.junyeong.sikggu.presentation.auth.filter.JwtAuthenticationFilter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

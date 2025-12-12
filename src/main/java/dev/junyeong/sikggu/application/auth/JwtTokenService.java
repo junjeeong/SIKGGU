@@ -1,6 +1,6 @@
-package dev.junyeong.sikggu.application;
+package dev.junyeong.sikggu.application.auth;
 
-import dev.junyeong.sikggu.domain.TokenService;
+import dev.junyeong.sikggu.domain.auth.TokenService;
 import dev.junyeong.sikggu.global.config.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

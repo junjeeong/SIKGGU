@@ -1,4 +1,4 @@
-package dev.junyeong.sikggu.domain;
+package dev.junyeong.sikggu.domain.auth;
 
 public interface TokenService {
 

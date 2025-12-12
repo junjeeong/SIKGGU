@@ -1,5 +1,7 @@
-package dev.junyeong.sikggu.domain;
+package dev.junyeong.sikggu.domain.order;
 
+import dev.junyeong.sikggu.domain.product.Product;
+import dev.junyeong.sikggu.domain.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -29,12 +31,11 @@ public class Order {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  // ⭐️ [관계 1] User와 N:1 관계 (주문자)
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
-  // ⭐️ [관계 2] Product와 N:1 관계 (주문 상품) -> 하나의 상품에 여러 User가 예약 가능해야 함 -> 누구에게 결제권을 줄지는 추후 문제
+  // 하나의 상품에 여러 User가 예약 가능해야 함 -> 누구에게 결제권을 줄지는 추후 문제
   @ManyToOne
   @JoinColumn(name = "product_id", nullable = false)
   private Product product;

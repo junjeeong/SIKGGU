@@ -1,4 +1,4 @@
-package dev.junyeong.sikggu.domain;
+package dev.junyeong.sikggu.domain.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,6 +41,10 @@ public class User {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private UserRole role;
+
+  public Boolean isPasswordMatch(String password) {
+    return this.password.equals(password);
+  }
 
   public void updatePassword(String hashedPassword) {
     this.password = hashedPassword;
