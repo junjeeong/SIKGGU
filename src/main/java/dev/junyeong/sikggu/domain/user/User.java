@@ -42,8 +42,32 @@ public class User {
   @Column(nullable = false)
   private UserRole role;
 
+  @Column
+  private Double latitude;
+
+  @Column
+  private Double longitude;
+
+
   public Boolean isPasswordMatch(String password) {
     return this.password.equals(password);
+  }
+
+  public void updateInfo(String nickname, String phoneNumber, Double latitude,
+      Double longitude) {
+
+    if (!(nickname == null)) {
+      this.nickname = nickname;
+    }
+    if (!(phoneNumber == null)) {
+      this.phoneNumber = phoneNumber;
+    }
+    if (!(latitude == null)) {
+      this.latitude = latitude;
+    }
+    if (!(longitude == null)) {
+      this.longitude = longitude;
+    }
   }
 
   public void updatePassword(String hashedPassword) {
