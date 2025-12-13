@@ -1,5 +1,6 @@
-package dev.junyeong.sikggu.domain.product;
+package dev.junyeong.sikggu.domain.saleitem; // 패키지 이름도 변경 필요
 
+import dev.junyeong.sikggu.domain.item.ItemStatus;
 import dev.junyeong.sikggu.domain.store.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,17 +21,17 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "product")
+@Table(name = "sale_item") // 테이블 이름도 변경
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Product {
+public class SaleItem { // 엔티티 이름 변경
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne // Product는 하나의 Store에 속함 (N:1)
+  @ManyToOne // SaleItem은 하나의 Store에 속함 (N:1)
   @JoinColumn(name = "store_id", nullable = false)
   private Store store;
 
@@ -49,12 +50,12 @@ public class Product {
   @Column(name = "stock_quantity", nullable = false)
   private Integer stockQuantity; // 동시성 제어 핵심 재고
 
-  @Column(nullable = false)
-  private LocalDateTime deadline; // 스케줄링 삭제 기준 마감시간
+  @Column(name = "sale_deadline", nullable = false) // 필드 이름 변경
+  private LocalDateTime saleDeadline; // 스케줄링 삭제 기준 마감시간
 
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
-  private ProductStatus status;
+  @Column(name = "sale_status", nullable = false) // 필드 이름 변경
+  private ItemStatus status;
 
   @Column(name = "created_at", nullable = false)
   private LocalDateTime createdAt;
@@ -68,7 +69,8 @@ public class Product {
     this.stockQuantity -= quantity;
 
     if (this.stockQuantity == 0) {
-      this.status = ProductStatus.SOLD_OUT;
+      // ProductStatus 대신 SaleStatus.SOLD_OUT을 사용해야 합니다.
+      this.status = ItemStatus.SOLD_OUT;
     }
   }
 }

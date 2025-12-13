@@ -1,6 +1,6 @@
-package dev.junyeong.sikggu.domain.product;
+package dev.junyeong.sikggu.domain.item;
 
-public enum ProductStatus {
+public enum ItemStatus {
 
   /**
    * 판매 가능한 상태 (재고가 남아있고, 마감 시간이 지나지 않음)
@@ -24,7 +24,7 @@ public enum ProductStatus {
 
   private final String description;
 
-  ProductStatus(String description) {
+  ItemStatus(String description) {
     this.description = description;
   }
 

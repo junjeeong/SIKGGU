@@ -30,6 +30,7 @@ public class UserController {
     return ResponseEntity.ok(response);
   }
 
+  // 사장님, 자취생 - 내 정보 수정
   @PatchMapping("/me")
   public ResponseEntity<UserResponse> updateInfo(
       @AuthenticationPrincipal User user, @RequestBody UserUpdateRequest request,) {
@@ -38,6 +39,7 @@ public class UserController {
     return ResponseEntity.ok(response);
   }
 
+  // 사장님, 자취생 - 회원 탈퇴
   @DeleteMapping("/me")
   public ResponseEntity<UserResponse> deleteUser(
       @AuthenticationPrincipal User user) {
