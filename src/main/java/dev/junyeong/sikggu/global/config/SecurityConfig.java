@@ -38,7 +38,7 @@ public class SecurityConfig {
         // 1. 인증/인가 설정 (요청별 허용 설정)
         .authorizeHttpRequests(authorize -> authorize
             // 회원가입 및 로그인 경로는 인증 없이 허용
-            .requestMatchers("/api/auth/sign-up", "/api/auth/sign-in").permitAll()
+            .requestMatchers("/api/v1/auth/sign-up", "/api/v1/auth/sign-in").permitAll()
             // 💡 추가된 로직: 모든 GET 요청은 인증 없이 허용 (/**는 모든 경로를 의미)
             .requestMatchers(HttpMethod.GET, "/**").permitAll()
             // 나머지 모든 요청은 반드시 인증 필요 (토큰 필요)

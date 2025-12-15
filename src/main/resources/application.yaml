@@ -4,6 +4,20 @@ spring:
   profiles:
     active: prod
 
+  datasource:
+    url: jdbc:mysql://localhost:3606/sikggu?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: junyeong
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
 jwt:
   secret: JWrsdNl8uC8K1MM/yNWLJQWpNH56pDMy3euavqoW3Ok=
   expiration-time: 3600000

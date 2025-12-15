@@ -40,6 +40,14 @@
       border-radius: 4px;
     }
 
+    select {
+      width: 98%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
     button {
       padding: 10px 15px;
       background-color: #007bff;
@@ -81,9 +89,18 @@
   <h2>1. 사장님 회원가입 (Sign Up)</h2>
   <form id="signUpForm">
     <label for="signUpEmail">이메일:</label>
-    <input type="text" id="signUpEmail" value="store_test@example.com" required>
+    <input type="text" id="signUpEmail" value="store_test_new@example.com" required>
     <label for="signUpPassword">비밀번호:</label>
-    <input type="password" id="signUpPassword" value="password123" required>
+    <input type="password" id="signUpPassword" value="Password123!" required>
+    <label for="signUpNickname">닉네임:</label>
+    <input type="text" id="signUpNickname" value="테스트사장님" required>
+    <label for="signUpPhone">전화번호:</label>
+    <input type="text" id="signUpPhone" value="010-9876-5432" required>
+    <label for="signUpRole">역할 (Role):</label>
+    <select id="signUpRole" required>
+      <option value="STORE">STORE (사장님)</option>
+      <option value="USER">USER (일반 사용자)</option>
+    </select>
     <button type="submit">회원가입 요청</button>
   </form>
   <p>결과: <span id="signUpResult" class="error">대기 중...</span></p>
@@ -91,9 +108,14 @@
   <h2>2. 로그인 및 토큰 획득 (Sign In)</h2>
   <form id="signInForm">
     <label for="signInEmail">이메일:</label>
-    <input type="text" id="signInEmail" value="store_test@example.com" required>
+    <input type="text" id="signInEmail" value="store_test_new@example.com" required>
     <label for="signInPassword">비밀번호:</label>
-    <input type="password" id="signInPassword" value="password123" required>
+    <input type="password" id="signInPassword" value="Password123!" required>
+    <label for="signInRole">역할 (Role):</label>
+    <select id="signInRole" required>
+      <option value="STORE">STORE (사장님)</option>
+      <option value="USER">USER (일반 사용자)</option>
+    </select>
     <button type="submit">로그인 요청</button>
   </form>
   <p>토큰: <span id="tokenDisplay" class="error">토큰 없음</span></p>
@@ -103,8 +125,8 @@
     <label>가게 이름:</label><input type="text" id="storeName" value="테스트반찬가게" required>
     <label>전화번호:</label><input type="text" id="storePhone" value="02-1234-5678" required>
     <label>주소:</label><input type="text" id="storeAddress" value="서울시 강남구" required>
-    <label>위도 (Lat):</label><input type="text" id="storeLat" value="37.5" required>
-    <label>경도 (Lng):</label><input type="text" id="storeLng" value="127.0" required>
+    <label>위도 (Lat):</label><input type="text" id="storeLat" value="37.51" value="37.51" required>
+    <label>경도 (Lng):</label><input type="text" id="storeLng" value="127.01" value="127.01" required>
     <button type="submit">가게 등록 요청 (토큰 필요)</button>
   </form>
   <p>결과: <span id="storeResult" class="error">대기 중...</span></p>
@@ -112,7 +134,7 @@
 </div>
 
 <script>
-  const BASE_URL = "/api/v1"; // 실제 서버 URL로 변경하세요. (예: "http://localhost:8080/api/v1")
+  const BASE_URL = "http://localhost:8080/api/v1"; // 테스트를 위해 명시적으로 포트 지정
   let globalToken = null;
 
   // --- 헬퍼 함수 ---
@@ -125,7 +147,7 @@
       headers['Authorization'] = `Bearer ${globalToken}`;
     } else if (requiresAuth && !globalToken) {
       console.error(`[${endpoint}] 인증 실패: 토큰이 없습니다. 먼저 로그인하세요.`);
-      return null;
+      throw new Error('인증 토큰 없음');
     }
 
     try {
@@ -135,14 +157,21 @@
         body: body ? JSON.stringify(body) : null
       });
 
-      // 응답 상태 코드가 400 이상이면 에러 처리
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({message: '에러 응답 본문 없음'}));
-        console.error(`[${endpoint}] API 요청 실패:`, response.status, response.statusText, errorData);
+        const contentType = response.headers.get("content-type");
+        let errorData = {message: `HTTP Status: ${response.status} ${response.statusText}`};
+
+        if (contentType && contentType.includes("application/json")) {
+          errorData = await response.json().catch(() => ({message: '에러 응답 본문 JSON 파싱 실패'}));
+        } else {
+          // 403 Forbidden 시 HTML 응답이 올 수 있으므로 텍스트로 처리
+          errorData.details = await response.text().catch(() => '응답 본문 없음');
+        }
+
+        console.error(`[${endpoint}] API 요청 실패:`, response.status, errorData);
         throw new Error(`API 요청 실패 (Status: ${response.status})`);
       }
 
-      // 204 No Content인 경우 처리
       if (response.status === 204) {
         return {message: "No Content (Success)"};
       }
@@ -158,15 +187,22 @@
   // --- 1. 회원가입 ---
   document.getElementById('signUpForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = document.getElementById('signUpEmail').value;
-    const password = document.getElementById('signUpPassword').value;
-    const resultSpan = document.getElementById('signUpResult');
 
+    const signUpData = {
+      email: document.getElementById('signUpEmail').value,
+      password: document.getElementById('signUpPassword').value,
+      // 💡 누락된 필수 필드 추가
+      nickname: document.getElementById('signUpNickname').value,
+      phoneNumber: document.getElementById('signUpPhone').value,
+      role: document.getElementById('signUpRole').value
+    };
+
+    const resultSpan = document.getElementById('signUpResult');
     resultSpan.textContent = '요청 중...';
     resultSpan.className = 'error';
 
     try {
-      const data = await apiRequest('/auth/sign-up', 'POST', {email, password});
+      const data = await apiRequest('/auth/sign-up', 'POST', signUpData);
       resultSpan.textContent = `회원가입 성공. User ID: ${data.userId}`;
       resultSpan.className = 'success';
       console.log("회원가입 성공:", data);
@@ -179,15 +215,19 @@
   // --- 2. 로그인 ---
   document.getElementById('signInForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = document.getElementById('signInEmail').value;
-    const password = document.getElementById('signInPassword').value;
-    const tokenDisplay = document.getElementById('tokenDisplay');
 
+    const signInData = {
+      email: document.getElementById('signInEmail').value,
+      password: document.getElementById('signInPassword').value,
+      role: document.getElementById('signInRole').value
+    };
+
+    const tokenDisplay = document.getElementById('tokenDisplay');
     tokenDisplay.textContent = '요청 중...';
     tokenDisplay.className = 'error';
 
     try {
-      const data = await apiRequest('/auth/sign-in', 'POST', {email, password});
+      const data = await apiRequest('/auth/sign-in', 'POST', signInData);
       globalToken = data.accessToken;
       tokenDisplay.textContent = `로그인 성공! Token (앞 10글자): ${globalToken.substring(0, 10)}...`;
       tokenDisplay.className = 'success';
