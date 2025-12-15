@@ -5,6 +5,7 @@ import dev.junyeong.sikggu.domain.user.User;
 import dev.junyeong.sikggu.presentation.store.dto.StoreCreateRequest;
 import dev.junyeong.sikggu.presentation.store.dto.StoreResponse;
 import dev.junyeong.sikggu.presentation.store.dto.StoreUpdateRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class StoreAdminController {
   @PostMapping
   @PreAuthorize("hasRole('STORE')")
   public ResponseEntity<StoreResponse> createStore(@AuthenticationPrincipal User user,
-      @RequestBody StoreCreateRequest request) {
+      @Valid @RequestBody StoreCreateRequest request) {
 
     StoreResponse response = storeService.createStore(user.getId(), request);
 
@@ -40,7 +41,7 @@ public class StoreAdminController {
   @PatchMapping("/{storeId}")
   @PreAuthorize("hasRole('STORE')")
   public ResponseEntity<StoreResponse> updateStore(@AuthenticationPrincipal User user,
-      @PathVariable Long storeId, @RequestBody StoreUpdateRequest request) {
+      @PathVariable Long storeId, @Valid @RequestBody StoreUpdateRequest request) {
     StoreResponse response = storeService.updateStoreInfo(user.getId(), storeId, request);
 
     return ResponseEntity.ok(response);

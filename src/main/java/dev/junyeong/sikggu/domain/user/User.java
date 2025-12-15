@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @Entity
@@ -49,8 +50,9 @@ public class User {
   private Double longitude;
 
 
-  public Boolean isPasswordMatch(String password) {
-    return this.password.equals(password);
+  public boolean isPasswordMatch(String rawPassword, PasswordEncoder passwordEncoder) {
+    // DB에 저장된 암호화된 this.password와 입력된 rawPassword를 비교
+    return passwordEncoder.matches(rawPassword, this.password);
   }
 
   public void updateInfo(String nickname, String phoneNumber, Double latitude,

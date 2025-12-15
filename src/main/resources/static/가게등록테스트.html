@@ -68,6 +68,8 @@
       border-radius: 4px;
       white-space: pre-wrap;
       word-wrap: break-word;
+      font-size: 0.9em;
+      margin-top: 10px;
     }
 
     .success {
@@ -104,6 +106,7 @@
     <button type="submit">회원가입 요청</button>
   </form>
   <p>결과: <span id="signUpResult" class="error">대기 중...</span></p>
+  <pre id="signUpResponsePre" style="max-height: 150px; overflow-y: auto;"></pre>
 
   <h2>2. 로그인 및 토큰 획득 (Sign In)</h2>
   <form id="signInForm">
@@ -119,18 +122,19 @@
     <button type="submit">로그인 요청</button>
   </form>
   <p>토큰: <span id="tokenDisplay" class="error">토큰 없음</span></p>
+  <pre id="signInResponsePre" style="max-height: 150px; overflow-y: auto;"></pre>
 
   <h2>3. 가게 등록 (Store Creation)</h2>
   <form id="createStoreForm">
     <label>가게 이름:</label><input type="text" id="storeName" value="테스트반찬가게" required>
     <label>전화번호:</label><input type="text" id="storePhone" value="02-1234-5678" required>
     <label>주소:</label><input type="text" id="storeAddress" value="서울시 강남구" required>
-    <label>위도 (Lat):</label><input type="text" id="storeLat" value="37.51" value="37.51" required>
-    <label>경도 (Lng):</label><input type="text" id="storeLng" value="127.01" value="127.01" required>
+    <label>위도 (Lat):</label><input type="text" id="storeLat" value="37.51" required>
+    <label>경도 (Lng):</label><input type="text" id="storeLng" value="127.01" required>
     <button type="submit">가게 등록 요청 (토큰 필요)</button>
   </form>
   <p>결과: <span id="storeResult" class="error">대기 중...</span></p>
-  <pre id="storeResponsePre"></pre>
+  <pre id="storeResponsePre" style="max-height: 150px; overflow-y: auto;"></pre>
 </div>
 
 <script>
@@ -146,8 +150,7 @@
     if (requiresAuth && globalToken) {
       headers['Authorization'] = `Bearer ${globalToken}`;
     } else if (requiresAuth && !globalToken) {
-      console.error(`[${endpoint}] 인증 실패: 토큰이 없습니다. 먼저 로그인하세요.`);
-      throw new Error('인증 토큰 없음');
+      throw {type: 'AuthError', message: `[${endpoint}] 인증 실패: 토큰이 없습니다. 먼저 로그인하세요.`};
     }
 
     try {
@@ -159,28 +162,48 @@
 
       if (!response.ok) {
         const contentType = response.headers.get("content-type");
-        let errorData = {message: `HTTP Status: ${response.status} ${response.statusText}`};
+        let errorData = {
+          code: response.status,
+          status: response.statusText,
+          message: `HTTP Status: ${response.status} ${response.statusText}`,
+          details: null
+        };
 
         if (contentType && contentType.includes("application/json")) {
-          errorData = await response.json().catch(() => ({message: '에러 응답 본문 JSON 파싱 실패'}));
+          // JSON 에러 응답 파싱 시도
+          try {
+            errorData.details = await response.json();
+            errorData.message = errorData.details.message || errorData.message;
+          } catch (e) {
+            errorData.details = {error: '에러 응답 본문 JSON 파싱 실패'};
+          }
         } else {
-          // 403 Forbidden 시 HTML 응답이 올 수 있으므로 텍스트로 처리
-          errorData.details = await response.text().catch(() => '응답 본문 없음');
+          // JSON이 아닐 경우 텍스트로 처리 (403 Forbidden 등)
+          errorData.details = {text: await response.text().catch(() => '응답 본문 없음')};
         }
 
         console.error(`[${endpoint}] API 요청 실패:`, response.status, errorData);
-        throw new Error(`API 요청 실패 (Status: ${response.status})`);
+        throw {type: 'ApiError', status: response.status, responseData: errorData};
       }
 
       if (response.status === 204) {
         return {message: "No Content (Success)"};
       }
 
+      // 응답 본문이 없을 경우 처리
+      if (response.headers.get("content-length") === "0" || response.status === 201
+          && response.headers.get("content-length") === null) {
+        return {message: `Status ${response.status} Success: Empty body`};
+      }
+
       return await response.json();
 
     } catch (error) {
+      if (error.type) {
+        throw error; // AuthError, ApiError는 그대로 전파
+      }
       console.error(`[${endpoint}] 네트워크 또는 처리 오류:`, error);
-      throw error;
+      throw {type: 'NetworkError', message: error.message || '네트워크 오류 발생'};
     }
   }
 
@@ -191,24 +214,32 @@
     const signUpData = {
       email: document.getElementById('signUpEmail').value,
       password: document.getElementById('signUpPassword').value,
-      // 💡 누락된 필수 필드 추가
       nickname: document.getElementById('signUpNickname').value,
       phoneNumber: document.getElementById('signUpPhone').value,
       role: document.getElementById('signUpRole').value
     };
 
     const resultSpan = document.getElementById('signUpResult');
+    const responsePre = document.getElementById('signUpResponsePre');
+
     resultSpan.textContent = '요청 중...';
     resultSpan.className = 'error';
+    responsePre.textContent = '...';
 
     try {
       const data = await apiRequest('/auth/sign-up', 'POST', signUpData);
       resultSpan.textContent = `회원가입 성공. User ID: ${data.userId}`;
       resultSpan.className = 'success';
+      responsePre.textContent = JSON.stringify(data, null, 2);
       console.log("회원가입 성공:", data);
     } catch (e) {
-      resultSpan.textContent = '회원가입 실패 (콘솔 확인)';
+      resultSpan.textContent = `회원가입 실패 (Status: ${e.status || 'N/A'})`;
       resultSpan.className = 'error';
+      if (e.responseData) {
+        responsePre.textContent = `Error Response:\n${JSON.stringify(e.responseData, null, 2)}`;
+      } else {
+        responsePre.textContent = `Error: ${e.message || '알 수 없는 오류'}`;
+      }
     }
   });
 
@@ -223,19 +254,28 @@
     };
 
     const tokenDisplay = document.getElementById('tokenDisplay');
+    const responsePre = document.getElementById('signInResponsePre');
+
     tokenDisplay.textContent = '요청 중...';
     tokenDisplay.className = 'error';
+    responsePre.textContent = '...';
 
     try {
       const data = await apiRequest('/auth/sign-in', 'POST', signInData);
       globalToken = data.accessToken;
       tokenDisplay.textContent = `로그인 성공! Token (앞 10글자): ${globalToken.substring(0, 10)}...`;
       tokenDisplay.className = 'success';
+      responsePre.textContent = JSON.stringify(data, null, 2);
       console.log("로그인 성공. 토큰:", data.accessToken);
     } catch (e) {
-      tokenDisplay.textContent = '로그인 실패 (콘솔 확인)';
+      tokenDisplay.textContent = `로그인 실패 (Status: ${e.status || 'N/A'})`;
       globalToken = null;
       tokenDisplay.className = 'error';
+      if (e.responseData) {
+        responsePre.textContent = `Error Response:\n${JSON.stringify(e.responseData, null, 2)}`;
+      } else {
+        responsePre.textContent = `Error: ${e.message || '알 수 없는 오류'}`;
+      }
     }
   });
 
@@ -256,19 +296,27 @@
 
     resultSpan.textContent = '요청 중...';
     resultSpan.className = 'error';
-    responsePre.textContent = '';
+    responsePre.textContent = '...';
 
     try {
       const data = await apiRequest('/stores', 'POST', storeData, true); // true: 인증 필요
 
-      resultSpan.textContent = `가게 등록 성공! (HTTP 201 Created)`;
+      resultSpan.textContent = `가게 등록 성공! (HTTP ${data.message.includes('No Content') ? '204'
+          : '201'})`;
       resultSpan.className = 'success';
       responsePre.textContent = JSON.stringify(data, null, 2);
       console.log("가게 등록 성공:", data);
 
     } catch (e) {
-      resultSpan.textContent = '가게 등록 실패 (콘솔 확인)';
+      resultSpan.textContent = `가게 등록 실패 (Status: ${e.status || 'N/A'})`;
       resultSpan.className = 'error';
+      if (e.type === 'AuthError') {
+        responsePre.textContent = `Error: ${e.message}`;
+      } else if (e.responseData) {
+        responsePre.textContent = `Error Response:\n${JSON.stringify(e.responseData, null, 2)}`;
+      } else {
+        responsePre.textContent = `Error: ${e.message || '알 수 없는 오류'}`;
+      }
     }
   });
 </script>

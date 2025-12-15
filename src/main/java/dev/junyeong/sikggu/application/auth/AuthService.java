@@ -24,7 +24,7 @@ public class AuthService {
     User user = userRepository.findByEmail(request.email()).orElseThrow(
         () -> new IllegalArgumentException(request.email() + "이메일을 가진 사용자를 찾지 못했습니다."));
 
-    if (!user.isPasswordMatch(request.password())) {
+    if (!user.isPasswordMatch(request.password(), passwordEncoder)) {
       throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
     }
 

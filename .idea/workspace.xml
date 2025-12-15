@@ -5,20 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29abc6f7-b20b-4e4d-97f0-a96eef23d504" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/global/config/GlobalExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/global/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/global/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/dto/SignInRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/dto/SignInRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/dto/SignUpRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/dto/SignUpRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/store/dto/StoreCreateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/store/dto/StoreCreateRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/application/auth/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/application/auth/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/user/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/dto/AuthResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/dto/AuthResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/item/controller/SaleItemAdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/item/controller/SaleItemAdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/item/dto/SaleItemUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/item/dto/SaleItemUpdateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/store/controller/StoreAdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/store/controller/StoreAdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/user/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/가게등록테스트.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/가게등록테스트.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/global/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/global/config/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/dto/SignInRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/dto/SignInRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/dto/SignUpRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/dto/SignUpRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/store/dto/StoreCreateRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/store/dto/StoreCreateRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/application/auth/AuthService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/application/auth/AuthService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/user/User$UserBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/user/User$UserBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/user/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/user/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/controller/AuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/controller/AuthController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/dto/AuthResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/dto/AuthResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/item/controller/SaleItemAdminController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/item/controller/SaleItemAdminController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/item/dto/SaleItemUpdateRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/item/dto/SaleItemUpdateRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/store/controller/StoreAdminController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/store/controller/StoreAdminController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/user/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/user/controller/UserController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/static/가게등록테스트.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/가게등록테스트.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,8 +36,8 @@
       <list>
         <option value="Enum" />
         <option value="Interface" />
-        <option value="Record" />
         <option value="Class" />
+        <option value="Record" />
       </list>
     </option>
   </component>
@@ -103,7 +108,7 @@
       <workItem from="1765420628348" duration="22845000" />
       <workItem from="1765605977275" duration="7083000" />
       <workItem from="1765613164155" duration="3356000" />
-      <workItem from="1765696065912" duration="12462000" />
+      <workItem from="1765696065912" duration="13726000" />
     </task>
     <servers />
   </component>

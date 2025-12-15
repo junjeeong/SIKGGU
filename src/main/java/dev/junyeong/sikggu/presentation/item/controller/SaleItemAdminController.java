@@ -6,6 +6,7 @@ import dev.junyeong.sikggu.presentation.item.dto.SaleItemCreateRequest;
 import dev.junyeong.sikggu.presentation.item.dto.SaleItemListResponse;
 import dev.junyeong.sikggu.presentation.item.dto.SaleItemResponse;
 import dev.junyeong.sikggu.presentation.item.dto.SaleItemUpdateRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +57,7 @@ public class SaleItemAdminController {
   public ResponseEntity<SaleItemResponse> updateMySaleItem(
       @AuthenticationPrincipal User user,
       @PathVariable Long saleItemId,
-      @RequestBody SaleItemUpdateRequest request) {
+      @Valid @RequestBody SaleItemUpdateRequest request) {
 
     SaleItemResponse response = saleItemService.updateSaleItem(user.getId(), saleItemId,
         request);

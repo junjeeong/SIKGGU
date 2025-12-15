@@ -4,6 +4,7 @@ import dev.junyeong.sikggu.application.user.UserService;
 import dev.junyeong.sikggu.domain.user.User;
 import dev.junyeong.sikggu.presentation.user.dto.UserResponse;
 import dev.junyeong.sikggu.presentation.user.dto.UserUpdateRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class UserController {
   // 전체 - 내 정보 수정
   @PatchMapping("/me")
   public ResponseEntity<UserResponse> updateInfo(
-      @AuthenticationPrincipal User user, @RequestBody UserUpdateRequest request) {
+      @AuthenticationPrincipal User user, @Valid @RequestBody UserUpdateRequest request) {
     UserResponse response = userService.updateInfo(user.getId(), request);
 
     return ResponseEntity.ok(response);
