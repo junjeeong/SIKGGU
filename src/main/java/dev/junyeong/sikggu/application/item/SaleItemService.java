@@ -1,12 +1,15 @@
 package dev.junyeong.sikggu.application.item;
 
 import dev.junyeong.sikggu.domain.item.ItemStatus;
-import dev.junyeong.sikggu.domain.saleitem.SaleItem;
+import dev.junyeong.sikggu.domain.item.SaleItem;
+import dev.junyeong.sikggu.domain.item.SaleItemRepository;
 import dev.junyeong.sikggu.domain.store.Store;
-import dev.junyeong.sikggu.presentation.store.dto.SaleItemCreateRequest;
-import dev.junyeong.sikggu.presentation.store.dto.SaleItemListResponse;
-import dev.junyeong.sikggu.presentation.store.dto.SaleItemResponse;
+import dev.junyeong.sikggu.presentation.item.dto.SaleItemCreateRequest;
+import dev.junyeong.sikggu.presentation.item.dto.SaleItemListResponse;
+import dev.junyeong.sikggu.presentation.item.dto.SaleItemResponse;
+import dev.junyeong.sikggu.presentation.item.dto.SaleItemUpdateRequest;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class SaleItemService {
 
   private final SaleItemRepository saleItemRepository;
-  // StoreService에서 Store 엔티티를 넘겨주지 않고 ID만 넘겨주므로,
-  // StoreRepository를 주입받아 Store 엔티티를 조회해야 할 수 있습니다.
-  // 현재는 ID만 받아 처리하고 Store 엔티티는 가짜로 생성한다고 가정합니다.
 
   // --------------------------------------------------
   // 1. 상품 등록 (StoreService로부터 위임)
@@ -29,13 +29,11 @@ public class SaleItemService {
 
   @Transactional
   public SaleItemResponse registerSaleItem(Long storeId, SaleItemCreateRequest request) {
-    // 1. Store 엔티티 조회 (실제로는 StoreService에서 Store를 찾아 넘겨주는 것이 더 효율적일 수 있음)
-    // 현재는 ID만 받아 처리한다고 가정하고, Store는 임시로 생성합니다.
-    Store dummyStore = Store.builder().id(storeId).build(); // 실제 구현 시 Repository 사용 필요
+    Store dummyStore = Store.builder().id(storeId).build();
 
     // 2. SaleItem 엔티티 생성
     SaleItem newSaleItem = SaleItem.builder()
-        .store(dummyStore) // 실제 Store 엔티티를 설정해야 합니다.
+        .store(dummyStore)
         .name(request.name())
         .description(request.description())
         .originalPrice(request.originalPrice())
@@ -51,12 +49,11 @@ public class SaleItemService {
   }
 
   // --------------------------------------------------
-  // 2. 상점에서 진열하고 있는 전체 상품 조회 (StoreService로부터 위임)
+  // 2. 사장님 전용 상품 조회
   // --------------------------------------------------
 
-  public SaleItemListResponse getSaleItemsByStoreId(Long storeId) {
-    // Store ID로 상품 목록을 조회
-    List<SaleItem> saleItems = saleItemRepository.findByStoreId(storeId);
+  public SaleItemListResponse getMySaleItems() {
+    List<SaleItem> saleItems = saleItemRepository.findAll();
 
     List<SaleItemResponse> responseList = saleItems.stream()
         .map(SaleItemResponse::from)
@@ -66,7 +63,7 @@ public class SaleItemService {
   }
 
   // --------------------------------------------------
-  // 3. 상품 수정 (StoreService로부터 위임)
+  // 3. 사장님 전용 상품 수정
   // --------------------------------------------------
 
   @Transactional
@@ -75,7 +72,6 @@ public class SaleItemService {
     SaleItem saleItem = saleItemRepository.findById(saleItemId)
         .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다. (ID: " + saleItemId + ")"));
 
-    // 🚨 중요: 소유권 검증 로직
     if (!saleItem.getStore().getId().equals(storeId)) {
       throw new IllegalArgumentException("해당 상품을 수정할 권한이 없습니다.");
     }
@@ -89,7 +85,7 @@ public class SaleItemService {
   }
 
   // --------------------------------------------------
-  // 4. 상품 삭제 (StoreService로부터 위임)
+  // 4. 사장님 전용 - 상품 삭제
   // --------------------------------------------------
 
   @Transactional
@@ -97,7 +93,6 @@ public class SaleItemService {
     SaleItem saleItem = saleItemRepository.findById(saleItemId)
         .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다. (ID: " + saleItemId + ")"));
 
-    // 🚨 중요: 소유권 검증 로직
     if (!saleItem.getStore().getId().equals(storeId)) {
       throw new IllegalArgumentException("해당 상품을 삭제할 권한이 없습니다.");
     }
@@ -112,14 +107,30 @@ public class SaleItemService {
 
   public SaleItemListResponse getNearbySaleItems(double latitude, double longitude) {
     // TODO: 좌표 기반으로 SaleItem을 조회하는 복잡한 쿼리 로직 구현 필요
-    return SaleItemListResponse.empty();
+    List<SaleItem> saleItems = saleItemRepository.findNearbySaleItems(latitude, longitude);
+
+    return SaleItemListResponse.from(saleItems);
   }
 
   public SaleItemResponse getSaleItemDetail(Long saleItemId) {
     SaleItem saleItem = saleItemRepository.findById(saleItemId)
         .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다. (ID: " + saleItemId + ")"));
 
-    // 소비자에게 보여줄 수 없는 정보는 필터링하여 DTO로 변환
     return SaleItemResponse.from(saleItem);
+  }
+
+  public SaleItemListResponse getSaleItemsByStoreId(Long storeId) {
+    List<SaleItem> saleItems = saleItemRepository.findByStoreIdAndStatus(storeId,
+        ItemStatus.AVAILABLE);
+
+    if (saleItems.isEmpty()) {
+      return new SaleItemListResponse(Collections.emptyList());
+    }
+
+    List<SaleItemResponse> responseList = saleItems.stream()
+        .map(SaleItemResponse::from)
+        .collect(Collectors.toList());
+
+    return new SaleItemListResponse(responseList);
   }
 }

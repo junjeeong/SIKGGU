@@ -17,7 +17,7 @@ public class StorePublicController {
 
   private final StoreService storeService;
 
-  // 주변 마트 조회
+  // 전체 - 주변 마트 조회
   @GetMapping
   public ResponseEntity<StoreListResponse> getNearbyStores(
       @AuthenticationPrincipal User user) {
@@ -28,5 +28,5 @@ public class StorePublicController {
     return ResponseEntity.ok(response);
   }
 
-  
+
 }

@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: sikggu
+  profiles:
+    active: prod
+
+jwt:
+  secret: JWrsdNl8uC8K1MM/yNWLJQWpNH56pDMy3euavqoW3Ok=
+  expiration-time: 3600000

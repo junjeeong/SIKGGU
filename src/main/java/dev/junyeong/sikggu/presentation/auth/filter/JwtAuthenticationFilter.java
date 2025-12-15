@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,45 +30,54 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       FilterChain filterChain)
       throws ServletException, IOException {
 
-    // 1. HTTP 헤더에서 토큰 추출
     String authorizationHeader = request.getHeader("Authorization");
     if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
       filterChain.doFilter(request, response);
-      return; // 토큰이 없거나 형식이 잘못된 경우 인증 없이 다음 필터로 진행
+      return;
     }
 
     String token = authorizationHeader.substring(7);
 
     try {
-      // 2. 토큰 유효성 검증
       if (tokenService.validateToken(token)) {
-        // 3. 토큰에서 사용자 ID 추출 및 User 조회
         Long userId = tokenService.getUserIdFromToken(token);
 
-        // 💡 힌트: findById 대신 findByEmail 등을 사용할 수도 있습니다.
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("토큰의 사용자 ID를 찾을 수 없습니다."));
 
-        // 4. Authentication 객체 생성 (권한은 임시로 USER 권한 하나만 부여)
-        // 비밀번호(credentials)는 null로 설정합니다.
+        // 💡 4. Authentication 객체 생성 (사용자 역할(Role) 반영)
+        Collection<? extends SimpleGrantedAuthority> authorities = createAuthorities(user);
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-            user, // Principal: User 객체 자체를 담음 (이후 @AuthenticationPrincipal로 사용 가능)
+            user, // Principal: User 객체
             null,
-            Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")) // 권한 목록
+            authorities // 💡 User 객체의 역할을 기반으로 생성된 권한 목록
         );
 
-        // 5. SecurityContext에 Authentication 객체 설정 (인증 완료)
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (Exception e) {
-      // 토큰 만료, 잘못된 서명 등 오류 발생 시 로그 기록 및 인증 실패 처리
-      logger.error("JWT 인증 실패");
-      // 💡 힌트: response.setStatus(401) 등으로 명시적인 응답을 보낼 수도 있습니다.
+      logger.error("JWT 인증 실패: " + e.getMessage());
+      // 인증 실패 시 명시적인 401 응답 처리
+      // response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
     }
 
-    // 6. 다음 필터로 체인 진행
     filterChain.doFilter(request, response);
   }
+
+  // 💡 사용자의 역할을 SimpleGrantedAuthority 목록으로 변환하는 헬퍼 메서드
+  private Collection<? extends SimpleGrantedAuthority> createAuthorities(User user) {
+    // ⚠️ User 객체에서 역할 정보를 가져오는 부분은 실제 구현에 따라 달라질 수 있습니다.
+    // 여기서는 user.getRole().name()이 "STORE_OWNER"나 "STUDENT"와 같은 문자열을 반환한다고 가정합니다.
+
+    String roleName = user.getRole().name(); // 예: "STORE_OWNER"
+
+    // Spring Security는 'ROLE_' 접두사를 포함한 문자열을 권한으로 처리하는 것이 일반적입니다.
+    String grantedAuthorityName = "ROLE_" + roleName;
+
+    return Collections.singletonList(new SimpleGrantedAuthority(grantedAuthorityName));
+  }
+
 
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {

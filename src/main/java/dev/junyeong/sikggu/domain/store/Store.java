@@ -45,4 +45,15 @@ public class Store {
   @Column(nullable = false)
   private Double longitude;
 
+  public void update(String name, String phoneNumber, String address,
+      Double latitude, Double longitude) {
+
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+    this.address = address;
+    this.latitude = latitude;
+    this.longitude = longitude;
+
+  }
+
 }

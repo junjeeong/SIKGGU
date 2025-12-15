@@ -1,6 +1,5 @@
-package dev.junyeong.sikggu.domain.saleitem; // 패키지 이름도 변경 필요
+package dev.junyeong.sikggu.domain.item; // 패키지 이름도 변경 필요
 
-import dev.junyeong.sikggu.domain.item.ItemStatus;
 import dev.junyeong.sikggu.domain.store.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

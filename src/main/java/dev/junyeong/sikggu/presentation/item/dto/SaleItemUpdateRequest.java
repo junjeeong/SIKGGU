@@ -1,4 +1,4 @@
-package dev.junyeong.sikggu.presentation.store.dto;
+package dev.junyeong.sikggu.presentation.item.dto;
 
 import dev.junyeong.sikggu.domain.item.ItemStatus;
 import java.time.LocalDateTime;

@@ -22,7 +22,7 @@ public class UserController {
 
   private final UserService userService;
 
-  // 사장님, 자취생 - 내 정보 조회
+  // 전체 - 내 정보 조회
   @GetMapping("/me")
   public ResponseEntity<UserResponse> getInfo(@AuthenticationPrincipal User user) {
     UserResponse response = userService.getInfo(user.getId());
@@ -30,16 +30,16 @@ public class UserController {
     return ResponseEntity.ok(response);
   }
 
-  // 사장님, 자취생 - 내 정보 수정
+  // 전체 - 내 정보 수정
   @PatchMapping("/me")
   public ResponseEntity<UserResponse> updateInfo(
-      @AuthenticationPrincipal User user, @RequestBody UserUpdateRequest request,) {
+      @AuthenticationPrincipal User user, @RequestBody UserUpdateRequest request) {
     UserResponse response = userService.updateInfo(user.getId(), request);
 
     return ResponseEntity.ok(response);
   }
 
-  // 사장님, 자취생 - 회원 탈퇴
+  // 전체 - 회원 탈퇴
   @DeleteMapping("/me")
   public ResponseEntity<UserResponse> deleteUser(
       @AuthenticationPrincipal User user) {
