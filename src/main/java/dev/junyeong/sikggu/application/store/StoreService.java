@@ -35,7 +35,6 @@ public class StoreService {
             () -> new IllegalArgumentException("사용자(ID: " + userId + ")를 찾을 수 없습니다."));
 
     Store newStore = Store.builder()
-        .id(userId)
         .user(user)
         .name(request.name())
         .phoneNumber(request.phoneNumber())

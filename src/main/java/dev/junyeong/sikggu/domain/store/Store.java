@@ -23,11 +23,12 @@ import lombok.NoArgsConstructor;
 public class Store {
 
   @Id
+  @Column(name = "user_id")
   private Long id;
 
   @MapsId
   @OneToOne
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
   @Column(nullable = false)
