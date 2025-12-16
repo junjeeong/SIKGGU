@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sikggu API 테스트</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      line-height: 1.6;
+      padding: 20px;
+      background-color: #f4f4f9;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 10px;
+      margin-top: 20px;
+      color: #333;
+    }
+
+    .api-section {
+      margin-bottom: 30px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="password"], input[type="number"] {
+      width: calc(100% - 12px);
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #5cb85c;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      margin-right: 5px;
+    }
+
+    button:hover {
+      background-color: #4cae4c;
+    }
+
+    pre {
+      background-color: #eee;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .warning {
+      color: red;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🛒 Sikggu API Public 테스트 페이지</h1>
+  <p class="warning">
+    ※ 중요: API 호출 전에 **[로그인 & 토큰 저장]**을 먼저 실행해야 합니다.
+  </p>
+
+  <div class="api-section">
+    <h2>🔑 1. 회원가입 및 로그인</h2>
+    <div id="auth-inputs">
+      <label for="regEmail">이메일:</label>
+      <input type="text" id="regEmail" value="testuser@example.com">
+      <label for="regPassword">비밀번호:</label>
+      <input type="password" id="regPassword" value="testpassword1234">
+      <label for="regNickname">닉네임:</label>
+      <input type="text" id="regNickname" value="테스트유저">
+      <label for="regPhoneNumber">전화번호:</label>
+      <input type="text" id="regPhoneNumber" value="010-1234-5678">
+      <label for="regRole">역할 (USER/STORE):</label>
+      <input type="text" id="regRole" value="USER" placeholder="USER 또는 STORE">
+    </div>
+
+    <div style="margin-top: 10px;">
+      <button onclick="registerUser()">회원가입</button>
+      <button onclick="loginAndSaveToken()">로그인 & 토큰 저장</button>
+    </div>
+
+    <h3 style="margin-top: 15px;">내 위치 업데이트 (주변 조회를 위해 필수)</h3>
+    <label for="latitude">위도 (Latitude):</label>
+    <input type="number" id="latitude" step="0.000001" value="37.5665">
+    <label for="longitude">경도 (Longitude):</label>
+    <input type="number" id="longitude" step="0.000001" value="126.9780">
+    <button onclick="updateUserInfo()">사용자 정보 업데이트</button>
+
+    <h3 style="margin-top: 15px;">현재 토큰 상태</h3>
+    <pre id="tokenStatus">토큰이 없습니다.</pre>
+  </div>
+
+  <div class="api-section">
+    <h2>🏠 2. 주변 마트 조회 (GET /api/v1/stores)</h2>
+    <p>로그인한 사용자의 현재 위치(위도/경도)를 기준으로 주변 마트를 조회합니다. **(USER 권한 필요)**</p>
+    <button onclick="getNearbyStores()">API 호출</button>
+    <pre id="nearbyStoresResponse"></pre>
+  </div>
+
+  <div class="api-section">
+    <h2>🛒 3. 특정 마트의 상품 조회 (GET /api/v1/sale-items/{storeId})</h2>
+    <label for="inputStoreId">조회할 마트 ID (Store ID):</label>
+    <input type="text" id="inputStoreId" placeholder="주변 마트 조회 결과에서 확인 후 입력">
+    <button onclick="getProductsByStore()">API 호출</button>
+    <pre id="productsByStoreResponse"></pre>
+  </div>
+
+  <div class="api-section">
+    <h2>📦 4. 주변 상품 조회 (GET /api/v1/sale-items/nearby)</h2>
+    <p>로그인한 사용자의 현재 위치를 기준으로 주변의 상품들을 조회합니다. **(USER 권한 필요)**</p>
+    <button onclick="getNearbySaleItems()">API 호출</button>
+    <pre id="nearbySaleItemsResponse"></pre>
+  </div>
+</div>
+
+<script>
+  const BASE_URL = 'http://localhost:8080/api/v1';
+  const TOKEN_KEY = 'jwtToken';
+
+  function getToken() {
+    return localStorage.getItem(TOKEN_KEY);
+  }
+
+  function updateTokenStatus() {
+    const token = getToken();
+    document.getElementById('tokenStatus').textContent = token ? `토큰 저장됨: ${token.substring(0,
+        30)}...` : '토큰이 없습니다.';
+  }
+
+  async function apiCall(endpoint, method = 'GET', body = null) {
+    const token = getToken();
+    if (!token) {
+      alert('로그인이 필요합니다. 먼저 [로그인 & 토큰 저장]을 실행해주세요.');
+      return null;
+    }
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+
+    const config = {
+      method: method,
+      headers: headers
+    };
+
+    if (body && (method === 'POST' || method === 'PATCH')) {
+      config.body = JSON.stringify(body);
+    }
+
+    try {
+      const response = await fetch(BASE_URL + endpoint, config);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || `API 호출 실패 (Status: ${response.status})`);
+      }
+      return data;
+
+    } catch (error) {
+      console.error(`Error calling ${endpoint}:`, error);
+      return {error: true, message: error.message || 'API 호출 중 오류 발생'};
+    }
+  }
+
+  // ===================================================
+  // 1. 회원가입 및 로그인
+  // ===================================================
+
+  // 🚨 주의: 실제 회원가입 DTO(AuthRegisterRequest)에 맞게 필드명을 확인하세요.
+  async function registerUser() {
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+    const nickname = document.getElementById('regNickname').value;
+    const phoneNumber = document.getElementById('regPhoneNumber').value;
+    const role = document.getElementById('regRole').value;
+
+    const registerEndpoint = '/auth/sign-up';
+
+    try {
+      const response = await fetch(`${BASE_URL}${registerEndpoint}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          nickname: nickname,
+          phoneNumber: phoneNumber,
+          role: role
+        })
+      });
+
+      if (response.ok) {
+        alert('회원가입 성공! 이제 [로그인 & 토큰 저장]을 진행하세요.');
+      } else {
+        const errorData = await response.json();
+        alert(`회원가입 실패: ${errorData.message || response.statusText}`);
+      }
+    } catch (error) {
+      console.error('회원가입 중 오류:', error);
+      alert('회원가입 처리 중 오류 발생');
+    }
+  }
+
+  // 🚨 주의: 실제 로그인 DTO(AuthLoginRequest)에 맞게 필드명을 확인하세요.
+  async function loginAndSaveToken() {
+
+    // 1. role 필드 값을 USER로 강제 설정 (사용자 요청 반영)
+    document.getElementById('regRole').value = 'USER';
+
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+
+    // 2. 로그인 페이로드에 role: 'USER'를 명시적으로 추가 (사용자 요청 반영)
+    const loginPayload = {
+      email: email,
+      password: password,
+      role: 'USER' // 이 값이 서버로 전송됩니다.
+    };
+
+    const loginEndpoint = '/auth/sign-in';
+
+    try {
+      const response = await fetch(`${BASE_URL}${loginEndpoint}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(loginPayload) // 수정된 페이로드 전송
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const jwtToken = data.accessToken || data.token;
+
+        if (jwtToken) {
+          localStorage.setItem(TOKEN_KEY, jwtToken);
+          alert('로그인 성공 및 토큰 저장 완료!');
+          updateTokenStatus();
+        } else {
+          throw new Error('로그인은 성공했으나 응답에서 토큰을 찾을 수 없습니다.');
+        }
+      } else {
+        const errorData = await response.json();
+        alert(`로그인 실패: ${errorData.message || response.statusText}`);
+      }
+    } catch (error) {
+      console.error('로그인 중 오류:', error);
+      alert('로그인 처리 중 오류 발생');
+    }
+  }
+
+  // 🚨 주의: 실제 업데이트 DTO에 맞게 필드명을 확인하세요. (예: UserUpdateRequest)
+  async function updateUserInfo() {
+    const latitude = parseFloat(document.getElementById('latitude').value);
+    const longitude = parseFloat(document.getElementById('longitude').value);
+
+    const updateEndpoint = '/users/me'; // 사용자 정보 업데이트 API 주소로 가정 (PATCH/PUT)
+
+    const body = {
+      latitude: latitude,
+      longitude: longitude
+    };
+
+    const data = await apiCall(updateEndpoint, 'PATCH', body);
+
+    const responseElement = document.getElementById('tokenStatus');
+    if (data && !data.error) {
+      alert('사용자 위치 정보 업데이트 성공!');
+      responseElement.textContent = JSON.stringify(data, null, 2);
+    } else if (data) {
+      alert(`업데이트 실패: ${data.message}`);
+      responseElement.textContent = JSON.stringify(data, null, 2);
+    }
+    updateTokenStatus();
+  }
+
+  // ===================================================
+  // 2. 주변 마트 조회 (GET /api/v1/stores)
+  // ===================================================
+  async function getNearbyStores() {
+    const endpoint = '/stores';
+    const responseElement = document.getElementById('nearbyStoresResponse');
+    const data = await apiCall(endpoint);
+    responseElement.textContent = JSON.stringify(data, null, 2);
+
+    // 조회 성공 시, 첫 번째 마트 ID를 입력 필드에 자동 채우기 (편의상)
+    if (data && data.stores && data.stores.length > 0) {
+      document.getElementById('inputStoreId').value = data.stores[0].id;
+    }
+  }
+
+  // ===================================================
+  // 3. 특정 마트의 상품 조회 (GET /api/v1/sale-items/{storeId})
+  // ===================================================
+  async function getProductsByStore() {
+    const storeId = document.getElementById('inputStoreId').value;
+    if (!storeId) {
+      alert('마트 ID를 입력하거나 주변 마트 조회를 먼저 실행해주세요.');
+      return;
+    }
+    const endpoint = `/sale-items/${storeId}`;
+    const responseElement = document.getElementById('productsByStoreResponse');
+    const data = await apiCall(endpoint);
+    responseElement.textContent = JSON.stringify(data, null, 2);
+  }
+
+  // ===================================================
+  // 4. 주변 상품 조회 (GET /api/v1/sale-items/nearby)
+  // ===================================================
+  async function getNearbySaleItems() {
+    const endpoint = '/sale-items/nearby';
+    const responseElement = document.getElementById('nearbySaleItemsResponse');
+    const data = await apiCall(endpoint);
+    responseElement.textContent = JSON.stringify(data, null, 2);
+  }
+
+  // 페이지 로드 시 토큰 상태 업데이트
+  window.onload = updateTokenStatus;
+</script>
+</body>
+</html>

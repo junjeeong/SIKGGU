@@ -21,8 +21,7 @@ public class SaleItemPublicController {
   // 전체 - 주변 상품 조회
   @GetMapping("/nearby")
   public ResponseEntity<SaleItemListResponse> getNearbyUsers(@AuthenticationPrincipal User user) {
-    SaleItemListResponse response = saleItemService.getNearbySaleItems(user.getLatitude(),
-        user.getLatitude());
+    SaleItemListResponse response = saleItemService.getNearbySaleItems(user);
     return ResponseEntity.ok(response);
   }
 

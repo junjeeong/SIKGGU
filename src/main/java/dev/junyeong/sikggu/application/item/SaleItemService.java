@@ -4,6 +4,7 @@ import dev.junyeong.sikggu.domain.item.ItemStatus;
 import dev.junyeong.sikggu.domain.item.SaleItem;
 import dev.junyeong.sikggu.domain.item.SaleItemRepository;
 import dev.junyeong.sikggu.domain.store.Store;
+import dev.junyeong.sikggu.domain.user.User;
 import dev.junyeong.sikggu.presentation.item.dto.SaleItemCreateRequest;
 import dev.junyeong.sikggu.presentation.item.dto.SaleItemListResponse;
 import dev.junyeong.sikggu.presentation.item.dto.SaleItemResponse;
@@ -24,7 +25,7 @@ public class SaleItemService {
   private final SaleItemRepository saleItemRepository;
 
   // --------------------------------------------------
-  // 1. 상품 등록 (StoreService로부터 위임)
+  // 1. 상품 등록
   // --------------------------------------------------
 
   @Transactional
@@ -97,7 +98,6 @@ public class SaleItemService {
       throw new IllegalArgumentException("해당 상품을 삭제할 권한이 없습니다.");
     }
 
-    // 삭제
     saleItemRepository.delete(saleItem);
   }
 
@@ -105,9 +105,10 @@ public class SaleItemService {
   // 5. 소비자용 상품 조회 (SaleItemController에서 사용될 예정)
   // --------------------------------------------------
 
-  public SaleItemListResponse getNearbySaleItems(double latitude, double longitude) {
+  public SaleItemListResponse getNearbySaleItems(User user) {
     // TODO: 좌표 기반으로 SaleItem을 조회하는 복잡한 쿼리 로직 구현 필요
-    List<SaleItem> saleItems = saleItemRepository.findNearbySaleItems(latitude, longitude);
+    List<SaleItem> saleItems = saleItemRepository.findNearbySaleItems(user.getLatitude(),
+        user.getLongitude());
 
     return SaleItemListResponse.from(saleItems);
   }

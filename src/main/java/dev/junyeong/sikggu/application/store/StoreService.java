@@ -1,6 +1,5 @@
 package dev.junyeong.sikggu.application.store;
 
-import dev.junyeong.sikggu.application.item.SaleItemService;
 import dev.junyeong.sikggu.domain.store.Store;
 import dev.junyeong.sikggu.domain.store.StoreRepository;
 import dev.junyeong.sikggu.domain.user.User;
@@ -21,7 +20,6 @@ public class StoreService {
 
   private final StoreRepository storeRepository;
   private final UserRepository userRepository;
-  private final SaleItemService saleItemService;
 
   @Transactional
   public StoreResponse createStore(Long userId, StoreCreateRequest request) {
