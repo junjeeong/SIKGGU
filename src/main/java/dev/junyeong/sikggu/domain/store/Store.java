@@ -32,29 +32,35 @@ public class Store {
   private User user;
 
   @Column(nullable = false)
-  private String name;
+  private String storeName;
+
+  @Column(name = "image_url")
+  private String imageUrl;
+
+  @Column(name = "description")
+  private String description;
 
   @Column(nullable = false, unique = true)
-  private String phoneNumber;
+  private String storeContactNumber;
 
   @Column(nullable = false)
   private String address;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private Double latitude;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private Double longitude;
 
-  public void update(String name, String phoneNumber, String address,
+  public void update(String storeName, String storeContactNumber, String address, String imageUrl,
       Double latitude, Double longitude) {
 
-    this.name = name;
-    this.phoneNumber = phoneNumber;
+    this.storeName = storeName;
+    this.storeContactNumber = storeContactNumber;
     this.address = address;
+    this.imageUrl = imageUrl;
     this.latitude = latitude;
     this.longitude = longitude;
-
   }
 
 }

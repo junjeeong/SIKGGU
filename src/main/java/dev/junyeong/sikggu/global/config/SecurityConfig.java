@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,6 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -35,10 +37,13 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
     http
+        // 0. CORS 설정 연결
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
         // 1. 인증/인가 설정 (요청별 허용 설정)
         .authorizeHttpRequests(authorize -> authorize
             // 회원가입 및 로그인 경로는 인증 없이 허용
-            .requestMatchers("/api/v1/auth/sign-up", "/api/v1/auth/sign-in").permitAll()
+            .requestMatchers("/api/v1/auth/sign-up/**", "/api/v1/auth/sign-in").permitAll()
             // 💡 추가된 로직: 모든 GET 요청은 인증 없이 허용 (/**는 모든 경로를 의미)
             .requestMatchers(HttpMethod.GET, "/**").permitAll()
             // 나머지 모든 요청은 반드시 인증 필요 (토큰 필요)
@@ -70,6 +75,7 @@ public class SecurityConfig {
     // 💡 힌트: Vercel 주소와 로컬 주소를 명시하거나, 개발 환경에서는 *을 사용합니다.
     // 실제 운영 환경에서는 보안을 위해 명시적인 출처(Origin)를 사용해야 합니다.
     configuration.setAllowedOrigins(List.of(
+        "http://localhost:5173/", // 프런트엔드 개발 환경
         "http://localhost:3000", // 프런트엔드 개발 환경
         "http://localhost:8080" // 백엔드 index.html
     ));

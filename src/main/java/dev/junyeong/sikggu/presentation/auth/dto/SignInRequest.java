@@ -1,9 +1,7 @@
 package dev.junyeong.sikggu.presentation.auth.dto;
 
-import dev.junyeong.sikggu.domain.user.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record SignInRequest(
@@ -14,10 +12,7 @@ public record SignInRequest(
     @NotBlank(message = "비밀번호는 필수입니다.")
     // 💡 로그인 시에는 복잡도 검증은 불필요하나, 최소 길이 제한은 유지
     @Size(min = 8, max = 20, message = "비밀번호는 8자 이상 20자 이하로 입력해야 합니다.")
-    String password,
-
-    @NotNull(message = "사용자 역할은 필수입니다.")
-    UserRole role
+    String password
 ) {
 
 }

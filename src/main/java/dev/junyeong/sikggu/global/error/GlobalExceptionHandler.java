@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,7 +19,6 @@ public class GlobalExceptionHandler {
       HttpServletRequest request) {
     log.warn("Validation Exception: {} -> {}", request.getRequestURI(), e.getMessage());
 
-    // 첫 번째 필드 에러 메시지를 추출하여 클라이언트에게 명시적으로 전달
     String defaultMessage = e.getBindingResult().getFieldError() != null ?
         e.getBindingResult().getFieldError().getDefaultMessage() : "유효성 검사 실패";
 
@@ -59,10 +59,24 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
   }
 
+  // 💡 AccessDeniedException을 handleAllException 위로 올리는 것이 좋습니다.
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e,
+      HttpServletRequest request) {
+    log.warn("Access Denied Exception: {} -> {}", request.getRequestURI(), e.getMessage());
+
+    ErrorResponse errorResponse = new ErrorResponse(
+        HttpStatus.FORBIDDEN.value(),
+        "FORBIDDEN",
+        "해당 요청에 대한 접근 권한이 없습니다."
+    );
+
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+  }
+
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleAllException(Exception e, HttpServletRequest request) {
-    log.error("Internal Server Error: {} -> {}", request.getRequestURI(), e.getMessage(),
-        e);
+    log.error("Internal Server Error: {} -> {}", request.getRequestURI(), e.getMessage(), e);
 
     ErrorResponse errorResponse = new ErrorResponse(
         HttpStatus.INTERNAL_SERVER_ERROR.value(),

@@ -67,14 +67,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   // 💡 사용자의 역할을 SimpleGrantedAuthority 목록으로 변환하는 헬퍼 메서드
   private Collection<? extends SimpleGrantedAuthority> createAuthorities(User user) {
-    // ⚠️ User 객체에서 역할 정보를 가져오는 부분은 실제 구현에 따라 달라질 수 있습니다.
-    // 여기서는 user.getRole().name()이 "STORE_OWNER"나 "STUDENT"와 같은 문자열을 반환한다고 가정합니다.
-
     String roleName = user.getRole().name(); // 예: "STORE_OWNER"
-
-    // Spring Security는 'ROLE_' 접두사를 포함한 문자열을 권한으로 처리하는 것이 일반적입니다.
     String grantedAuthorityName = "ROLE_" + roleName;
-
     return Collections.singletonList(new SimpleGrantedAuthority(grantedAuthorityName));
   }
 

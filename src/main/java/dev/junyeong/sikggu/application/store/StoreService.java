@@ -34,8 +34,8 @@ public class StoreService {
 
     Store newStore = Store.builder()
         .user(user)
-        .name(request.name())
-        .phoneNumber(request.phoneNumber())
+        .storeName(request.name())
+        .storeContactNumber(request.phoneNumber())
         .address(request.address())
         .latitude(request.latitude())
         .longitude(request.longitude())
@@ -46,6 +46,22 @@ public class StoreService {
     return StoreResponse.from(savedStore);
   }
 
+  @Transactional(readOnly = true)
+  public StoreListResponse getAllStores() {
+    List<Store> stores = storeRepository.findAll().stream()
+        .toList();
+
+    return StoreListResponse.from(stores);
+  }
+
+  public StoreResponse getStoreById(Long storeId) {
+    Store store = storeRepository.findById(storeId)
+        .orElseThrow(
+            () -> new IllegalArgumentException("해당 ID의 가게를 찾을 수 없습니다. (StoreID: " + storeId + ")"));
+
+    return StoreResponse.from(store);
+  }
+  
   public StoreResponse getStoreInfo(Long userId) {
     Store store = storeRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("가게를 찾을 수 없습니다. (UserID: " + userId + ")"));
@@ -68,7 +84,8 @@ public class StoreService {
     Store store = storeRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("가게를 찾을 수 없습니다. (UserID: " + userId + ")"));
 
-    store.update(request.name(), request.phoneNumber(), request.address(), request.latitude(),
+    store.update(request.name(), request.phoneNumber(), request.address(), request.imageUrl(),
+        request.latitude(),
         request.longitude());
 
     return StoreResponse.from(store);
