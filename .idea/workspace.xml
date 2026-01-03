@@ -5,60 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29abc6f7-b20b-4e4d-97f0-a96eef23d504" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/product/ProductCategory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/dto/StoreSignUpRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/product/dto/SaleProductResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/application/auth/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/application/auth/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/application/item/SaleItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/application/product/SaleProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/application/store/StoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/application/store/StoreService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/item/ItemStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/product/ProductStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/item/SaleItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/product/SaleProduct.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/item/SaleItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/product/SaleProductRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/item/SaleItemRepositoryCustom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/product/SaleProductRepositoryCustom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/item/SaleItemRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/product/SaleProductRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/store/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/domain/store/Store.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/global/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/global/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/global/error/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/global/error/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/dto/SignInRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/dto/SignInRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/dto/SignUpRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/dto/UserSignUpRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/auth/filter/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/item/controller/SaleItemAdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/product/controller/SaleProductAdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/item/controller/SaleItemPublicController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/product/controller/SaleProductPublicController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/item/dto/SaleItemCreateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/product/dto/SaleProductCreateRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/item/dto/SaleItemListResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/product/dto/SaleProductListResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/item/dto/SaleItemResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/item/dto/SaleItemUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/product/dto/SaleProductUpdateRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/store/controller/StorePublicController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/store/controller/StorePublicController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/store/dto/StoreResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/store/dto/StoreResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/store/dto/StoreUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/junyeong/sikggu/presentation/store/dto/StoreUpdateRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/application/auth/AuthService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/application/auth/AuthService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/application/item/SaleItemService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/application/store/StoreService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/application/store/StoreService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/item/ItemStatus.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/item/SaleItem$SaleItemBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/item/SaleItem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/item/SaleItemRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/item/SaleItemRepositoryCustom.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/item/SaleItemRepositoryImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/store/Store$StoreBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/store/Store$StoreBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/store/Store.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/domain/store/Store.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/global/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/global/config/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/global/error/GlobalExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/global/error/GlobalExceptionHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/controller/AuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/controller/AuthController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/dto/SignInRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/dto/SignInRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/dto/SignUpRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/filter/JwtAuthenticationFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/auth/filter/JwtAuthenticationFilter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/item/controller/SaleItemAdminController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/item/controller/SaleItemPublicController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/item/dto/SaleItemCreateRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/item/dto/SaleItemListResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/item/dto/SaleItemResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/item/dto/SaleItemUpdateRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/store/controller/StorePublicController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/store/controller/StorePublicController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/store/dto/StoreResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/store/dto/StoreResponse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/store/dto/StoreUpdateRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dev/junyeong/sikggu/presentation/store/dto/StoreUpdateRequest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,6 +28,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="OptimizeOnSaveOptions">
     <option name="myRunOnSave" value="true" />
   </component>
@@ -152,7 +103,9 @@
       <workItem from="1766384167024" duration="5093000" />
       <workItem from="1766414113413" duration="3241000" />
       <workItem from="1766646250624" duration="720000" />
-      <workItem from="1766807599785" duration="6286000" />
+      <workItem from="1766807599785" duration="14806000" />
+      <workItem from="1767147540524" duration="279000" />
+      <workItem from="1767149996242" duration="4307000" />
     </task>
     <servers />
   </component>
