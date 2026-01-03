@@ -5,7 +5,7 @@ spring:
     active: prod
 
   datasource:
-    url: jdbc:mysql://localhost:3606/sikggu?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/sikggu?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: wnsdud3124
     driver-class-name: com.mysql.cj.jdbc.Driver
