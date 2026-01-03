@@ -77,6 +77,7 @@ public class SecurityConfig {
     configuration.setAllowedOrigins(List.of(
         "http://localhost:5173/", // 프런트엔드 개발 환경
         "http://localhost:3000", // 프런트엔드 개발 환경
+        "https://sikggu-fe.vercel.app/", // 프론트엔드 배포 환경
         "http://localhost:8080" // 백엔드 index.html
     ));
 
